@@ -1,13 +1,13 @@
 set -eu
 
 # echo "set grub-pc/install_devices /dev/sda" | sudo debconf-communicate
-# sudo apt-get -qq update
-# sudo apt-get -y upgrade
+sudo apt-get -qq update
+sudo apt-get -y upgrade
 
-# sudo apt-get install --force-yes -y git
+sudo apt-get install -y git
 
-# git clone https://github.com/koooge/debian-provisioning.git
-# cd debian-provisioning
-# ./debian.sh
-# cd ..
-# rm -r debian-provisioning
+git clone https://github.com/koooge/debian-stretch-provisioning.git
+cd debian-stretch-provisioning
+./debian.sh
+cd ..
+rm -rf debian-stretch-provisioning

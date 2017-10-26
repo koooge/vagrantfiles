@@ -7,5 +7,5 @@ sudo apt-get install -y git
 git clone https://github.com/koooge/ubuntu-xenial-provisioning.git
 cd ubuntu-xenial-provisioning
 ./ubuntu.sh
-cd -
+cd
 rm -rf ubuntu-xenial-provisioning

@@ -1,11 +1,10 @@
 #!/bin/bash -e
 
 sudo apt-get update -qq
-sudo apt-get upgrade -y
-sudo apt-get install -y git
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
 
 git clone https://github.com/koooge/ubuntu-xenial-provisioning.git
 cd ubuntu-xenial-provisioning
-./ubuntu.sh
+  ./ubuntu.sh
 cd
 rm -rf ubuntu-xenial-provisioning

@@ -8,41 +8,43 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, inline: $script
 
   config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 
   config.vm.define "master" do |master|
     master.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
       vb.cpus = "2"
     end
     master.vm.hostname = "master"
     master.vm.network :private_network, ip: "192.168.33.10"
-    master.vm.provision :shell, inline: $master
   end
 
   config.vm.define "node" do |node|
-    node.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-    end
     node.vm.hostname = "node"
     node.vm.network :private_network, ip: "192.168.33.11"
-    node.vm.provision :shell, inline: $node
   end
 end
 
 $script = <<SCRIPT
-apt-get update
+apt-get update -qq
 apt-get upgrade -y
 apt-get install -y ntp
+
+# docker
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update -qq
+apt-get install -y docker-ce
+usermod -aG docker vagrant
+
+# kubeadm, kubectl, kubelet
+apt-get update && apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+apt-get install -y kubelet kubeadm kubectl
 SCRIPT
-
-$master = <<MASTER
-# kubectl
-#curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-#chmod +x ./kubectl
-#sudo mv ./kubectl /usr/local/bin/kubectl
-MASTER
-
-$node = <<NODE
-NODE

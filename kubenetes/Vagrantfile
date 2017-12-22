@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     master.vm.hostname = "master"
     master.vm.network :private_network, ip: "192.168.33.10"
+    master.vm.provision :shell, privileged: false, inline: $master
   end
 
   config.vm.define "node" do |node|
@@ -51,3 +52,14 @@ apt-get install -y kubelet kubeadm kubectl
 # swapoff
 swapoff --all
 SCRIPT
+
+$master = <<MASTER
+# kubeadm
+sudo kubeadm init
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# flunnel
+MASTER

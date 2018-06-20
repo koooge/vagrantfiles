@@ -16,5 +16,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 
-#  config.vm.provision :shell, privileged: false, path: "bootstrap.sh"
+  config.vm.provision :shell, privileged: false, inline: $script
 end
+
+$script = <<SCRIPT
+sudo apt-get update -qq
+sudo apt-get dist-upgrade -y
+
+git clone https://github.com/koooge/ubuntu-bionic-provisioning.git
+cd ubuntu-bionic-provisioning
+  ./ubuntu.sh
+cd
+rm -rf ubuntu-bionic-provisioning
+SCRIPT

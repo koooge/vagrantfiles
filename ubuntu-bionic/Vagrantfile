@@ -23,8 +23,6 @@ $script = <<SCRIPT
 set -e
 
 git clone https://github.com/koooge/ubuntu-bionic-provisioning.git
-cd ubuntu-bionic-provisioning
-./ubuntu.sh
-cd
-rm -rf ubuntu-bionic-provisioning
+cd ubuntu-bionic-provisioning && ./ubuntu.sh
+cd && rm -rf ubuntu-bionic-provisioning
 SCRIPT

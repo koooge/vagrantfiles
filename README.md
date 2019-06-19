@@ -6,10 +6,11 @@
   - [koooge/debian-provisioning](https://github.com/koooge/debian-provisioning)
   - [koooge/debian-stretch-provisioning](https://github.com/koooge/debian-stretch-provisioning)
   - [koooge/ubuntu-xenial-provisioning](https://github.com/koooge/ubuntu-xenial-provisioning)
+  - [koooge/ubuntu-bionic-provisioning](https://github.com/koooge/ubuntu-bionic-provisioning)
 - [koooge/dotfiles](https://github.com/koooge/dotfiles)
 
 ## usage
 ```
-$ cd debian-jessie
+$ cd ubuntu-bionic
 $ vagrant up
 ```

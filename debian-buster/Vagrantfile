@@ -1,0 +1,24 @@
+VAGRANTFILE_API_VERSION = "2"
+BOX = "bento/debian-10.2"
+CPU_COUNT = "2"
+RAM = "4096"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "#{BOX}"
+
+  config.vm.network :private_network, ip: "192.168.33.10"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = "#{CPU_COUNT}"
+    vb.memory = "#{RAM}"
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  config.vm.provision :shell, privileged: false, inline: $script
+end
+
+$script = <<SCRIPT
+set -e
+sudo apt -qq update
+sudo apt -y dist-upgrade
+SCRIPT
